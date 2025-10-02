@@ -13,6 +13,7 @@ import styles from './VoiceInterface.module.css';
 interface VoiceInterfaceProps {
   onAgentCommand?: (agent: string, command: string) => void;
   onAgentResponse?: (agent: string, response: string) => void;
+  compact?: boolean;
 }
 
 type Agent = 'alexis' | 'tom' | 'jerry' | 'karen';
@@ -52,7 +53,7 @@ const AGENTS: Record<Agent, AgentProfile> = {
   },
 };
 
-export function VoiceInterface({ onAgentCommand, onAgentResponse }: VoiceInterfaceProps) {
+export function VoiceInterface({ onAgentCommand, onAgentResponse, compact = false }: VoiceInterfaceProps) {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [transcript, setTranscript] = useState('');
@@ -219,6 +220,28 @@ export function VoiceInterface({ onAgentCommand, onAgentResponse }: VoiceInterfa
     }
   };
 
+  // Compact mode - minimal UI
+  if (compact) {
+    return (
+      <div className={styles.compactContainer}>
+        <div className={styles.compactHeader}>
+          <div className={styles.compactTitle}>🎤 Voice</div>
+          <div className={styles.compactStatus}>{isListening ? 'Listening' : 'Ready'}</div>
+        </div>
+        <button
+          className={`${styles.compactButton} ${isListening ? styles.listening : ''}`}
+          onClick={toggleListening}
+        >
+          {isListening ? '🔴 Stop' : '🎤 Start'}
+        </button>
+        {activeAgent && (
+          <div className={styles.compactAgent}>{AGENTS[activeAgent].name}</div>
+        )}
+      </div>
+    );
+  }
+
+  // Full mode - complete UI
   return (
     <div className={styles.container}>
       {/* Header */}

@@ -286,7 +286,7 @@ export default function Home() {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr 1fr 1fr 1.5fr',
         gap: '12px',
-        height: '100px',
+        minHeight: '140px',
         flexShrink: 0
       }}>
         {/* Compact Pitch Monitor */}
@@ -326,7 +326,7 @@ export default function Home() {
           padding: '8px 10px',
           overflow: 'hidden'
         }}>
-          <VoiceInterface />
+          <VoiceInterface compact />
         </div>
       </div>
 

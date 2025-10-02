@@ -217,6 +217,70 @@
   color: var(--text-tertiary);
 }
 
+/* Compact Mode Styles */
+.compactContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  height: 100%;
+}
+
+.compactHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.compactTitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: #00e5ff;
+}
+
+.compactStatus {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-family: monospace;
+  padding: 2px 6px;
+  background: rgba(0, 229, 255, 0.1);
+  border-radius: 3px;
+}
+
+.compactButton {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #00e5ff, #00b8d4);
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.compactButton:hover {
+  background: linear-gradient(135deg, #00ffea, #00d4ff);
+  transform: translateY(-1px);
+}
+
+.compactButton.listening {
+  background: linear-gradient(135deg, #ff5555, #ff3333);
+  animation: pulse 1.5s infinite;
+}
+
+.compactAgent {
+  font-size: 11px;
+  font-weight: 600;
+  color: #00e5ff;
+  text-align: center;
+  padding: 4px;
+  background: rgba(0, 229, 255, 0.1);
+  border-radius: 4px;
+}
+
 /* CSS Variables */
 :root {
   --text-primary: #ffffff;
