@@ -14,15 +14,15 @@ import styles from './CompactPitchMonitor.module.css';
 
 interface CompactPitchMonitorProps {
   trackId?: string;
-  audioContext: AudioContext | null;
-  mediaStream: MediaStream | null;
+  audioContext?: AudioContext | null;
+  mediaStream?: MediaStream | null;
   enabled?: boolean;
 }
 
 export function CompactPitchMonitor({
   trackId,
-  audioContext,
-  mediaStream,
+  audioContext = null,
+  mediaStream = null,
   enabled = true,
 }: CompactPitchMonitorProps) {
   const {

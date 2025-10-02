@@ -13,14 +13,14 @@ import { useEffects } from '@/src/core/useEffects';
 import styles from './CompactEQControls.module.css';
 
 interface CompactEQControlsProps {
-  trackId: string;
-  audioContext: AudioContext | null;
+  trackId?: string;
+  audioContext?: AudioContext | null;
   enabled?: boolean;
 }
 
 export function CompactEQControls({
-  trackId,
-  audioContext,
+  trackId = 'default',
+  audioContext = null,
   enabled = true,
 }: CompactEQControlsProps) {
   const effects = useEffects({ trackId, audioContext, enabled });
