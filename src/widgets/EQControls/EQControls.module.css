@@ -1,0 +1,244 @@
+/* EQControls Styles */
+
+.container {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 16px;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.powerButton {
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: monospace;
+}
+
+.powerButton.enabled {
+  background: rgba(0, 255, 136, 0.2);
+  border-color: rgba(0, 255, 136, 0.5);
+  color: #00ff88;
+}
+
+.powerButton:hover {
+  background: var(--bg-hover);
+  transform: scale(1.05);
+}
+
+.presetSelector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.presetDropdown {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.presetDropdown:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent-color);
+}
+
+.presetDropdown:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* EQ Bands Grid */
+.bandsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.band {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.bandHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.bandLabel {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent-color);
+}
+
+.bandValue {
+  font-size: 14px;
+  font-weight: 700;
+  font-family: monospace;
+  color: var(--text-primary);
+}
+
+/* Slider Controls */
+.sliderControl {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.controlLabel {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-primary);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+.slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+.slider:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.slider:disabled::-webkit-slider-thumb {
+  cursor: not-allowed;
+}
+
+.slider:disabled::-moz-range-thumb {
+  cursor: not-allowed;
+}
+
+.valueLabel {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-family: monospace;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
+}
+
+.resetButton {
+  padding: 6px 16px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.resetButton:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--accent-color);
+}
+
+/* CSS Variables (inherit from global design tokens) */
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #2a2a2a;
+  --bg-hover: #3a3a3a;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-tertiary: #808080;
+  --accent-color: #3b82f6;
+  --border-color: #333333;
+}
