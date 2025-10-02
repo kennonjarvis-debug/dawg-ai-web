@@ -1,0 +1,225 @@
+/* VoiceInterface Styles */
+
+.container {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border-radius: 12px;
+  padding: 24px;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 2px solid rgba(0, 229, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(0, 229, 255, 0.2);
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #00e5ff;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+.status {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-family: monospace;
+  padding: 6px 12px;
+  background: rgba(0, 229, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* Active Agent */
+.activeAgent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  background: rgba(0, 229, 255, 0.15);
+  border-radius: 8px;
+  border-left: 4px solid #00e5ff;
+}
+
+.agentName {
+  font-size: 16px;
+  font-weight: 700;
+  color: #00e5ff;
+}
+
+.agentRole {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Transcript */
+.transcript {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+.transcriptLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.transcriptText {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+/* Response */
+.response {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(0, 255, 136, 0.1);
+  border-radius: 6px;
+  border-left: 3px solid #00ff88;
+}
+
+.responseLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.responseText {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.listenButton {
+  flex: 1;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #00e5ff, #00b8d4);
+  color: #000;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.listenButton:hover {
+  background: linear-gradient(135deg, #00ffea, #00d4ff);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 229, 255, 0.5);
+}
+
+.listenButton.listening {
+  background: linear-gradient(135deg, #ff5555, #ff3333);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.speakingIndicator {
+  padding: 12px 20px;
+  background: rgba(0, 255, 136, 0.2);
+  color: #00ff88;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  animation: fadeInOut 2s infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Wake Words Guide */
+.guide {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(147, 51, 234, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(147, 51, 234, 0.3);
+}
+
+.guideTitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wakeWords {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.wakeWord {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+.wakeWordText {
+  font-size: 13px;
+  font-weight: 600;
+  color: #00e5ff;
+  font-family: monospace;
+}
+
+.wakeWordAgent {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+/* CSS Variables */
+:root {
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-tertiary: #808080;
+}
