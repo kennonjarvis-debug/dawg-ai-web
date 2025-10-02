@@ -1,0 +1,244 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Coach Event Schemas",
+  "version": "v1.0.0",
+  "description": "Event schemas for real-time vocal coaching AI subsystem",
+  "events": {
+    "coach.feedback": {
+      "description": "Real-time vocal coaching suggestion during recording/practice",
+      "event": "coach.feedback",
+      "version": "v1",
+      "payload": {
+        "type": "object",
+        "required": ["session_id", "timestamp", "feedback_type", "message"],
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "description": "Recording session identifier",
+            "example": "rec_01JBNC9ZXY..."
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "Milliseconds since recording start",
+            "example": 15420
+          },
+          "feedback_type": {
+            "type": "string",
+            "enum": ["pitch", "timing", "technique", "breathing", "encouragement"],
+            "description": "Category of coaching feedback"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["info", "warning", "error", "success"],
+            "description": "Urgency level of feedback"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable coaching message",
+            "example": "Slightly sharp - drop the pitch a bit"
+          },
+          "pitch_data": {
+            "type": "object",
+            "description": "Detailed pitch analysis (optional)",
+            "properties": {
+              "frequency": {"type": "number"},
+              "midi_note": {"type": "integer"},
+              "note_name": {"type": "string"},
+              "cents_deviation": {"type": "number"},
+              "in_tune": {"type": "boolean"},
+              "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+            }
+          },
+          "technique_correction": {
+            "type": "object",
+            "description": "Specific technique advice (optional)",
+            "properties": {
+              "issue": {"type": "string"},
+              "correction": {"type": "string"},
+              "exercise_id": {"type": "string"}
+            }
+          },
+          "profile_id": {
+            "type": "string",
+            "description": "User vocal profile reference"
+          }
+        }
+      },
+      "example": {
+        "event": "coach.feedback",
+        "version": "v1",
+        "id": "evt_01JBNC...",
+        "trace_id": "tr_01JBNC...",
+        "producer": "coach-service",
+        "ts": "2025-10-03T04:15:23.456Z",
+        "signature": "HMAC...",
+        "payload": {
+          "session_id": "rec_01JBNC9ZXYP...",
+          "timestamp": 15420,
+          "feedback_type": "pitch",
+          "severity": "warning",
+          "message": "Slightly sharp - drop the pitch a bit",
+          "pitch_data": {
+            "frequency": 442.3,
+            "midi_note": 69,
+            "note_name": "A4",
+            "cents_deviation": 15,
+            "in_tune": false,
+            "confidence": 0.87
+          },
+          "profile_id": "prof_01JBNC..."
+        }
+      }
+    },
+    "coach.analysis.completed": {
+      "description": "Post-recording vocal performance analysis completed",
+      "event": "coach.analysis.completed",
+      "version": "v1",
+      "payload": {
+        "type": "object",
+        "required": ["session_id", "recording_id", "overall_score", "metrics"],
+        "properties": {
+          "session_id": {"type": "string"},
+          "recording_id": {"type": "string"},
+          "profile_id": {"type": "string"},
+          "overall_score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Overall performance score"
+          },
+          "grade": {
+            "type": "string",
+            "enum": ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F"],
+            "description": "Letter grade"
+          },
+          "metrics": {
+            "type": "object",
+            "required": ["pitch_accuracy", "pitch_stability", "consistency"],
+            "properties": {
+              "pitch_accuracy": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Percentage of in-tune singing"
+              },
+              "pitch_stability": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Variance-based stability score"
+              },
+              "consistency": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Detection success rate"
+              },
+              "timing_accuracy": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Rhythmic precision (optional)"
+              }
+            }
+          },
+          "highlights": {
+            "type": "array",
+            "description": "Notable moments in performance",
+            "items": {
+              "type": "object",
+              "properties": {
+                "timestamp": {"type": "integer"},
+                "type": {"type": "string", "enum": ["excellent", "issue", "vibrato", "sustained_note"]},
+                "message": {"type": "string"}
+              }
+            }
+          },
+          "suggestions": {
+            "type": "array",
+            "description": "Improvement suggestions",
+            "items": {
+              "type": "object",
+              "properties": {
+                "area": {"type": "string"},
+                "suggestion": {"type": "string"},
+                "exercise_id": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "example": {
+        "event": "coach.analysis.completed",
+        "version": "v1",
+        "id": "evt_01JBNC...",
+        "trace_id": "tr_01JBNC...",
+        "producer": "coach-service",
+        "ts": "2025-10-03T04:20:00.000Z",
+        "signature": "HMAC...",
+        "payload": {
+          "session_id": "rec_01JBNC9ZXYP...",
+          "recording_id": "audio_01JBNC...",
+          "profile_id": "prof_01JBNC...",
+          "overall_score": 87,
+          "grade": "B+",
+          "metrics": {
+            "pitch_accuracy": 92,
+            "pitch_stability": 85,
+            "consistency": 78
+          },
+          "highlights": [
+            {
+              "timestamp": 23500,
+              "type": "excellent",
+              "message": "Strong sustained note with vibrato"
+            }
+          ],
+          "suggestions": [
+            {
+              "area": "pitch_stability",
+              "suggestion": "Focus on steady breath support",
+              "exercise_id": "ex_breathing_01"
+            }
+          ]
+        }
+      }
+    },
+    "coach.exercise.completed": {
+      "description": "User completed a vocal exercise",
+      "event": "coach.exercise.completed",
+      "version": "v1",
+      "payload": {
+        "type": "object",
+        "required": ["exercise_id", "user_id", "score", "completed_at"],
+        "properties": {
+          "exercise_id": {"type": "string"},
+          "user_id": {"type": "string"},
+          "profile_id": {"type": "string"},
+          "score": {"type": "integer", "minimum": 0, "maximum": 100},
+          "attempts": {"type": "integer", "minimum": 1},
+          "duration_seconds": {"type": "integer"},
+          "completed_at": {"type": "string", "format": "date-time"},
+          "performance_data": {
+            "type": "object",
+            "description": "Detailed exercise performance metrics"
+          }
+        }
+      }
+    }
+  },
+  "consumed_events": {
+    "recording.started": {
+      "description": "Coach subscribes to recording start to begin real-time analysis",
+      "consumes": true
+    },
+    "recording.stopped": {
+      "description": "Coach finalizes analysis when recording ends",
+      "consumes": true
+    },
+    "profile.updated": {
+      "description": "Coach adapts feedback based on updated user profile",
+      "consumes": true
+    }
+  }
+}

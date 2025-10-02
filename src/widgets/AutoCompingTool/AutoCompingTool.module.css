@@ -1,0 +1,375 @@
+/* AutoCompingTool Styles */
+
+.container {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 20px;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+.sectionTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+/* Take Selection */
+.takeSelection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.takeList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.takeItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.takeItem:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 229, 255, 0.3);
+}
+
+.takeItem.selected {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: #00e5ff;
+}
+
+.takeCheckbox {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #00e5ff;
+  transition: all 0.2s;
+}
+
+.takeItem.selected .takeCheckbox {
+  background: #00e5ff;
+  border-color: #00e5ff;
+  color: #000;
+}
+
+.takeInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.takeName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.takeMeta {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-family: monospace;
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px;
+  opacity: 0.5;
+}
+
+.emptyIcon {
+  font-size: 48px;
+  opacity: 0.3;
+}
+
+.emptyText {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+/* Analyzing */
+.analyzing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  background: rgba(0, 229, 255, 0.1);
+  border-radius: 8px;
+  border: 2px solid rgba(0, 229, 255, 0.3);
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(0, 229, 255, 0.3);
+  border-top-color: #00e5ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.analyzingText {
+  font-size: 14px;
+  font-weight: 600;
+  color: #00e5ff;
+}
+
+/* Comping Suggestion */
+.suggestion {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(0, 229, 255, 0.05);
+  border-radius: 8px;
+  border: 2px solid rgba(0, 229, 255, 0.2);
+}
+
+.suggestionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.confidence {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-family: monospace;
+}
+
+/* Overall Score */
+.overallScore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.scoreLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.scoreValue {
+  font-size: 36px;
+  font-weight: 700;
+  font-family: monospace;
+  line-height: 1;
+}
+
+/* Segments */
+.segments {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.segment {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  border-left: 4px solid #00e5ff;
+}
+
+.segmentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.segmentNumber {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.segmentScore {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.segmentBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.segmentInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.segmentTake {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.segmentTime {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-family: monospace;
+}
+
+.segmentReason {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.applyButton {
+  flex: 1;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #00e5ff, #00b8d4);
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.applyButton:hover {
+  background: linear-gradient(135deg, #00ffea, #00d4ff);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 229, 255, 0.4);
+}
+
+.applyButton:active {
+  transform: translateY(0);
+}
+
+.clearButton {
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clearButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Instructions */
+.instructions {
+  padding: 20px;
+  background: rgba(147, 51, 234, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(147, 51, 234, 0.3);
+}
+
+.instructionsTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.instructionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 24px;
+  margin: 0;
+}
+
+.instructionsList li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* CSS Variables */
+:root {
+  --bg-secondary: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-tertiary: #808080;
+  --border-color: #333333;
+}

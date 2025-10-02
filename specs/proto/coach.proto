@@ -1,0 +1,183 @@
+syntax = "proto3";
+
+package dawgai.coach.v1;
+
+option go_package = "github.com/dawgai/proto/coach/v1;coachv1";
+option java_package = "com.dawgai.coach.v1";
+option java_multiple_files = true;
+
+// Coach - Real-time vocal coaching AI service
+// Provides streaming pitch analysis and technique corrections
+service Coach {
+  // Stream audio chunks and receive real-time coaching feedback
+  rpc AnalyzeVocalPerformance(stream AudioChunk) returns (stream CoachFeedback);
+
+  // Get technique correction based on pitch analysis
+  rpc GetTechniqueCorrection(TechniqueCorrectionRequest) returns (TechniqueCorrectionResponse);
+
+  // Analyze completed recording and provide summary
+  rpc AnalyzeRecording(RecordingAnalysisRequest) returns (RecordingAnalysisResponse);
+
+  // Get recommended exercises for user
+  rpc GetRecommendedExercises(ExerciseRecommendationRequest) returns (ExerciseRecommendationResponse);
+}
+
+// Audio chunk for streaming analysis
+message AudioChunk {
+  string session_id = 1;
+  bytes audio_data = 2;
+  int32 sample_rate = 3;
+  int64 timestamp_ms = 4;
+  optional string target_note = 5;
+  optional string profile_id = 6;
+}
+
+// Real-time coaching feedback
+message CoachFeedback {
+  enum FeedbackType {
+    FEEDBACK_TYPE_UNSPECIFIED = 0;
+    FEEDBACK_TYPE_PITCH = 1;
+    FEEDBACK_TYPE_TIMING = 2;
+    FEEDBACK_TYPE_TECHNIQUE = 3;
+    FEEDBACK_TYPE_BREATHING = 4;
+    FEEDBACK_TYPE_ENCOURAGEMENT = 5;
+  }
+
+  enum Severity {
+    SEVERITY_UNSPECIFIED = 0;
+    SEVERITY_INFO = 1;
+    SEVERITY_WARNING = 2;
+    SEVERITY_ERROR = 3;
+    SEVERITY_SUCCESS = 4;
+  }
+
+  string session_id = 1;
+  int64 timestamp_ms = 2;
+  FeedbackType feedback_type = 3;
+  Severity severity = 4;
+  string message = 5;
+  optional PitchData pitch_data = 6;
+  optional TechniqueAdvice technique_advice = 7;
+}
+
+// Detailed pitch analysis data
+message PitchData {
+  float frequency = 1;
+  int32 midi_note = 2;
+  string note_name = 3;
+  float cents_deviation = 4;
+  bool in_tune = 5;
+  float confidence = 6;
+  optional string target_note = 7;
+}
+
+// Technique correction advice
+message TechniqueAdvice {
+  string issue = 1;
+  string correction = 2;
+  optional string exercise_id = 3;
+  optional string visual_aid_url = 4;
+}
+
+// Request for technique correction
+message TechniqueCorrectionRequest {
+  PitchData pitch_data = 1;
+  string profile_id = 2;
+  optional string exercise_id = 3;
+}
+
+// Response with technique correction
+message TechniqueCorrectionResponse {
+  TechniqueAdvice advice = 1;
+  float confidence = 2;
+}
+
+// Request for recording analysis
+message RecordingAnalysisRequest {
+  string recording_id = 1;
+  oneof audio_source {
+    string audio_url = 2;
+    bytes audio_data = 3;
+  }
+  string profile_id = 4;
+  optional SongMetadata song_metadata = 5;
+}
+
+// Song metadata for context
+message SongMetadata {
+  string title = 1;
+  string artist = 2;
+  int32 bpm = 3;
+  string key = 4;
+  string genre = 5;
+}
+
+// Response with recording analysis
+message RecordingAnalysisResponse {
+  int32 overall_score = 1;
+  string grade = 2;
+  PerformanceMetrics metrics = 3;
+  repeated PerformanceHighlight highlights = 4;
+  repeated ImprovementSuggestion suggestions = 5;
+}
+
+// Performance metrics breakdown
+message PerformanceMetrics {
+  float pitch_accuracy = 1;
+  float pitch_stability = 2;
+  float consistency = 3;
+  optional float timing_accuracy = 4;
+  optional float vibrato_quality = 5;
+}
+
+// Notable moment in performance
+message PerformanceHighlight {
+  enum HighlightType {
+    HIGHLIGHT_TYPE_UNSPECIFIED = 0;
+    HIGHLIGHT_TYPE_EXCELLENT = 1;
+    HIGHLIGHT_TYPE_ISSUE = 2;
+    HIGHLIGHT_TYPE_VIBRATO = 3;
+    HIGHLIGHT_TYPE_SUSTAINED_NOTE = 4;
+    HIGHLIGHT_TYPE_INTERVAL_JUMP = 5;
+  }
+
+  int64 timestamp_ms = 1;
+  HighlightType type = 2;
+  string message = 3;
+  optional PitchData pitch_data = 4;
+}
+
+// Improvement suggestion
+message ImprovementSuggestion {
+  string area = 1;
+  string suggestion = 2;
+  optional string exercise_id = 3;
+  int32 priority = 4;
+}
+
+// Request for exercise recommendations
+message ExerciseRecommendationRequest {
+  string profile_id = 1;
+  optional string target_area = 2;
+  optional int32 difficulty_level = 3;
+  int32 max_recommendations = 4;
+}
+
+// Response with exercise recommendations
+message ExerciseRecommendationResponse {
+  repeated VocalExercise exercises = 1;
+}
+
+// Vocal exercise definition
+message VocalExercise {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string target_area = 4;
+  int32 difficulty = 5;
+  int32 duration_seconds = 6;
+  optional string audio_guide_url = 7;
+  optional string video_tutorial_url = 8;
+  repeated string instructions = 9;
+  repeated string target_notes = 10;
+}
