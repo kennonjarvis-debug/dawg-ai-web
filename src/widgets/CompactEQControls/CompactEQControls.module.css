@@ -1,0 +1,93 @@
+/* CompactEQControls Styles */
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 100%;
+  width: 100%;
+}
+
+.noAudio {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  font-family: monospace;
+}
+
+.band {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.bandLabel {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-primary);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  flex: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.5);
+}
+
+.slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.5);
+}
+
+.bandValue {
+  font-size: 11px;
+  color: var(--text-primary);
+  font-family: monospace;
+  font-weight: 600;
+  min-width: 32px;
+  text-align: center;
+}
+
+/* CSS Variables */
+:root {
+  --bg-primary: #0a0a0a;
+  --text-primary: #ffffff;
+  --text-tertiary: #808080;
+  --accent-color: #3b82f6;
+}
