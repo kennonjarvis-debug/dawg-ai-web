@@ -1,0 +1,165 @@
+/* PerformanceScorer Styles */
+
+.container {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 16px;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Inactive State */
+.inactive {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px;
+  opacity: 0.5;
+}
+
+.inactiveIcon {
+  font-size: 48px;
+  opacity: 0.3;
+}
+
+.inactiveText {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+/* Score Section */
+.scoreSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.scoreCircle {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.scoreValue {
+  font-size: 42px;
+  font-weight: 700;
+  font-family: monospace;
+  line-height: 1;
+  text-shadow: 0 0 12px currentColor;
+}
+
+.scoreGrade {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.scoreLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Visualization Section */
+.visualizationSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.visualizationHeader {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.canvasContainer {
+  background: #0a0a0a;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Metrics Grid */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.metricCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.metricLabel {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.metricValue {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: monospace;
+  line-height: 1;
+}
+
+.metricBar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.metricBarFill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* CSS Variables */
+:root {
+  --bg-secondary: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-tertiary: #808080;
+  --border-color: #333333;
+}
