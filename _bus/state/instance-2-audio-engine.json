@@ -1,0 +1,60 @@
+{
+  "agent": "instance-2-audio-engine",
+  "status": "active",
+  "last_heartbeat": "2025-10-02T00:00:00.000Z",
+  "capabilities": [
+    "typescript",
+    "react",
+    "web-audio-api",
+    "pitch-detection",
+    "audio-widgets",
+    "real-time-coaching",
+    "performance-analysis",
+    "waveform-visualization"
+  ],
+  "subscriptions": [
+    "tasks.created",
+    "tasks.assigned",
+    "tasks.updated",
+    "profile.updated",
+    "conductor.plan.updated"
+  ],
+  "current_work": {
+    "completed_tasks": [
+      "LiveCoachingPanel widget - Real-time vocal coaching feedback",
+      "PerformanceScorer widget - Live performance scoring with metrics",
+      "WaveformAnnotations widget - AI-powered waveform analysis"
+    ],
+    "status": "idle",
+    "ready_for_assignment": true
+  },
+  "recent_outputs": [
+    {
+      "type": "widget",
+      "name": "LiveCoachingPanel",
+      "files": [
+        "src/widgets/LiveCoachingPanel/LiveCoachingPanel.tsx",
+        "src/widgets/LiveCoachingPanel/LiveCoachingPanel.module.css"
+      ],
+      "commit": "f9a8c7b"
+    },
+    {
+      "type": "widget",
+      "name": "PerformanceScorer",
+      "files": [
+        "src/widgets/PerformanceScorer/PerformanceScorer.tsx",
+        "src/widgets/PerformanceScorer/PerformanceScorer.module.css"
+      ],
+      "commit": "8734f04"
+    },
+    {
+      "type": "widget",
+      "name": "WaveformAnnotations",
+      "files": [
+        "src/widgets/WaveformAnnotations/WaveformAnnotations.tsx",
+        "src/widgets/WaveformAnnotations/WaveformAnnotations.module.css"
+      ],
+      "commit": "c530d4d"
+    }
+  ]
+}
