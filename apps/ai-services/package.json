@@ -1,0 +1,13 @@
+{
+  "name": "@dawg-ai/ai-services",
+  "version": "0.1.0",
+  "description": "DAWG AI Python Services (MusicGen, Vocal Analysis, etc.)",
+  "private": true,
+  "scripts": {
+    "dev": "uvicorn main:app --reload --port 3002",
+    "start": "uvicorn main:app --host 0.0.0.0 --port 3002",
+    "test": "pytest",
+    "lint": "ruff check .",
+    "format": "black ."
+  }
+}

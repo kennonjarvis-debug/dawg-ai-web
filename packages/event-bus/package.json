@@ -1,0 +1,20 @@
+{
+  "name": "@dawg-ai/event-bus",
+  "version": "1.0.0",
+  "description": "Typed event bus with NATS/Redis transport for DAWG AI",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@dawg-ai/types": "file:../types",
+    "nats": "^2.19.0",
+    "redis": "^4.6.12"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

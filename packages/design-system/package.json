@@ -1,0 +1,44 @@
+{
+  "name": "@dawg-ai/design-system",
+  "version": "0.1.0",
+  "description": "Shared UI components for DAWG AI",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "svelte": "./src/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "svelte": "./src/index.js"
+    },
+    "./*": {
+      "svelte": "./src/*"
+    }
+  },
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build && tsc --emitDeclarationOnly",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "clean": "rm -rf dist storybook-static",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "svelte": "^5.0.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.6.0",
+    "@storybook/svelte": "^7.6.0",
+    "@storybook/svelte-vite": "^7.6.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@types/node": "^20",
+    "storybook": "^7.6.0",
+    "typescript": "^5",
+    "vite": "^5.0.0",
+    "vitest": "^1.2.0"
+  }
+}

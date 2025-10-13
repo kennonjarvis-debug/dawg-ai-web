@@ -1,0 +1,29 @@
+{
+  "name": "@dawg-ai/design-tokens",
+  "version": "1.0.0",
+  "description": "Design tokens with TypeScript types for DAWG AI",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./tokens.css": "./dist/tokens.css"
+  },
+  "scripts": {
+    "build": "tsc && npm run generate:css",
+    "generate:css": "node dist/generate-css.js",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "validate": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/node": "^20.0.0"
+  }
+}

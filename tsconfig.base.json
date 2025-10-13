@@ -1,0 +1,63 @@
+{
+  "compilerOptions": {
+    // Language & Environment
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+
+    // Type Checking
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // Emit
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "removeComments": false,
+    "importHelpers": true,
+    "incremental": true,
+
+    // Interop Constraints
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+
+    // Skip Lib Check (for faster builds)
+    "skipLibCheck": true,
+
+    // Project References
+    "composite": true,
+
+    // Path Mapping
+    "baseUrl": ".",
+    "paths": {
+      "@dawg-ai/types": ["./packages/types/src"],
+      "@dawg-ai/types/*": ["./packages/types/src/*"],
+      "@dawg-ai/event-bus": ["./packages/event-bus/src"],
+      "@dawg-ai/design-tokens": ["./packages/design-tokens/src"],
+      "@dawg-ai/audio-engine": ["./packages/audio-engine/src"],
+      "@dawg-ai/audio-engine/*": ["./packages/audio-engine/src/*"],
+      "@dawg-ai/design-system": ["./packages/design-system/src"],
+      "@dawg-ai/design-system/*": ["./packages/design-system/src/*"],
+      "@dawg-ai/utils": ["./packages/utils/src"],
+      "@dawg-ai/utils/*": ["./packages/utils/src/*"],
+      "@audio/*": ["./packages/audio-engine/src/*"],
+      "@ui/*": ["./packages/design-system/src/*"],
+      "@/lib/*": ["./lib/*"],
+      "@/*": ["./src/*", "./*"]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".next",
+    "out"
+  ]
+}

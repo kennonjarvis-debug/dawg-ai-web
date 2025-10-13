@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "dawg-ai-services"
+version = "0.1.0"
+description = "AI services for DAWG AI (MusicGen, Vocal Analysis)"
+authors = ["DAWG AI Team"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.109.0"
+uvicorn = {extras = ["standard"], version = "^0.27.0"}
+torch = "^2.1.0"
+transformers = "^4.36.0"
+onnxruntime = "^1.16.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.0"
+black = "^23.12.0"
+ruff = "^0.1.9"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
