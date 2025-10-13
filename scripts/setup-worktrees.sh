@@ -8,6 +8,7 @@ set -e  # Exit on error
 MODULES=(
   "design-system"
   "audio-engine"
+  "backend"
   "track-manager"
   "midi-editor"
   "effects-processor"
