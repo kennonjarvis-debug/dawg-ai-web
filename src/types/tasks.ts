@@ -94,16 +94,24 @@ export const TaskRequestSchema = z.object({
 export interface TaskResult {
   /** ID of the task that was executed */
   taskId: string;
+  /** Whether the task succeeded */
+  success: boolean;
   /** Final status of the task */
   status: 'completed' | 'failed' | 'pending_approval' | 'in_progress';
   /** Result data if completed successfully */
+  data?: any;
+  /** Result data (alternative field name) */
   result?: any;
   /** Error information if failed */
   error?: Error;
   /** When the task completed or failed */
   timestamp: Date;
   /** ID of the agent that executed the task */
-  agentId: string;
+  executedBy: string;
+  /** ID of the agent that executed the task (alternative field name) */
+  agentId?: string;
+  /** Optional message about the result */
+  message?: string;
 }
 
 /**
@@ -111,11 +119,15 @@ export interface TaskResult {
  */
 export const TaskResultSchema = z.object({
   taskId: z.string().uuid(),
+  success: z.boolean(),
   status: z.enum(['completed', 'failed', 'pending_approval', 'in_progress']),
+  data: z.any().optional(),
   result: z.any().optional(),
   error: z.instanceof(Error).optional(),
   timestamp: z.date(),
-  agentId: z.string().min(1),
+  executedBy: z.string().min(1),
+  agentId: z.string().min(1).optional(),
+  message: z.string().optional(),
 });
 
 /**

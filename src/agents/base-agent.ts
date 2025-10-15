@@ -6,7 +6,7 @@
  * memory integration, and approval workflows.
  */
 
-import { anthropic, DEFAULT_MODEL } from '../integrations/anthropic.js';
+import { anthropic, DEFAULT_MODEL, getOpenAIClient, validateOpenAIConfig } from '../integrations/anthropic.js';
 import { Logger } from '../utils/logger.js';
 import { JarvisError, ErrorCode } from '../utils/error-handler.js';
 import type { DecisionEngine } from '../core/decision-engine.js';
@@ -19,6 +19,9 @@ import type {
 } from '../types/agents.js';
 import type { TaskRequest, TaskResult, TaskType } from '../types/tasks.js';
 import type { DecisionResult } from '../types/decisions.js';
+
+// Export AgentConfig for use by subclasses
+export type { AgentConfig };
 
 /**
  * Abstract base class for all Jarvis agents
@@ -40,11 +43,11 @@ export abstract class BaseAgent {
   constructor(config: AgentConfig) {
     this.id = config.id;
     this.name = config.name;
-    this.capabilities = config.capabilities;
+    this.capabilities = config.capabilities || [];
     this.integrations = config.integrations;
-    this.decisionEngine = config.decisionEngine;
-    this.memory = config.memory;
-    this.approvalQueue = config.approvalQueue;
+    this.decisionEngine = config.decisionEngine!;
+    this.memory = config.memory!;
+    this.approvalQueue = config.approvalQueue!;
     this.logger = new Logger(`Agent:${this.name}`);
     this.status = 'idle';
 
@@ -102,12 +105,21 @@ export abstract class BaseAgent {
         );
       }
 
-      // 2. Get decision from decision engine
+      // 2. Get decision from decision engine with historical context
+      const historicalMemories = await this.memory.query({
+        type: undefined, // All types
+        tags: [task.type],
+        limit: 10,
+        sortBy: 'importance',
+        sortOrder: 'desc',
+      });
+
       const decision = await this.decisionEngine.evaluate({
-        task,
-        historicalData: await this.memory.getRelevantContext(task.type, task.data, 10),
-        rules: [], // Rules already loaded in DecisionEngine
-        agentCapabilities: this.capabilities,
+        taskType: task.type,
+        taskData: task.data,
+        historicalData: historicalMemories,
+        userPreferences: task.metadata?.userPreferences,
+        currentState: {},
       });
 
       this.logger.debug('Decision engine evaluation complete', {
@@ -135,17 +147,14 @@ export abstract class BaseAgent {
       const result = await this.executeTask(task);
 
       // 5. Store in memory
-      await this.memory.storeEntry({
-        id: crypto.randomUUID(),
-        type: 'task_execution',
+      await this.memory.store({
+        type: 'task_execution' as any,
         content: { task, result, decision },
         timestamp: new Date(),
         importance: 0.5,
-        metadata: {
-          agentId: this.id,
-          taskType: task.type,
-          success: result.success,
-        },
+        agentId: this.id,
+        taskId: task.id,
+        tags: [task.type, result.success ? 'success' : 'failure'],
       });
 
       this.logger.info('Task completed successfully', {
@@ -160,16 +169,14 @@ export abstract class BaseAgent {
       this.logger.error('Task execution failed', error as Error, { taskId: task.id });
 
       // Store failure in memory for learning
-      await this.memory.storeEntry({
-        id: crypto.randomUUID(),
-        type: 'error',
+      await this.memory.store({
+        type: 'error' as any,
         content: { task, error: (error as Error).message },
         timestamp: new Date(),
         importance: 0.7,
-        metadata: {
-          agentId: this.id,
-          taskType: task.type,
-        },
+        agentId: this.id,
+        taskId: task.id,
+        tags: [task.type, 'error'],
       }).catch(() => {
         // Don't throw if memory storage fails
         this.logger.warn('Failed to store error in memory');
@@ -180,15 +187,31 @@ export abstract class BaseAgent {
   }
 
   /**
+   * Get agent ID
+   */
+  getId(): string {
+    return this.id;
+  }
+
+  /**
+   * Get agent name
+   */
+  getName(): string {
+    return this.name;
+  }
+
+  /**
    * Get current agent status
    */
   getStatus(): AgentStatus {
     return {
       id: this.id,
       name: this.name,
-      status: this.status,
+      activeTasks: 0, // TODO: Track active tasks
       capabilities: this.capabilities,
-      lastActive: new Date(),
+      isHealthy: this.status !== 'error',
+      statusMessage: this.status,
+      lastHealthCheck: new Date(),
     };
   }
 
@@ -235,7 +258,7 @@ export abstract class BaseAgent {
     return {
       taskId: task.id,
       success: false,
-      status: 'awaiting_approval',
+      status: 'pending_approval',
       data: { requestId },
       timestamp: new Date(),
       executedBy: this.id,
@@ -256,12 +279,14 @@ export abstract class BaseAgent {
     prompt: string,
     context?: any
   ): Promise<string> {
-    this.logger.debug('Generating content with Claude', {
+    this.logger.debug('Generating content with AI', {
       promptLength: prompt.length,
       hasContext: !!context,
     });
 
+    // Try Claude first
     try {
+      this.logger.debug('Attempting Claude API');
       const response = await anthropic.messages.create({
         model: DEFAULT_MODEL,  // ✅ Use centralized model config
         max_tokens: 4096,
@@ -275,6 +300,7 @@ export abstract class BaseAgent {
 
       const content = response.content[0];
       if (content.type === 'text') {
+        this.logger.debug('Claude API succeeded');
         return content.text;
       }
 
@@ -284,12 +310,42 @@ export abstract class BaseAgent {
         { responseType: content.type },
         true
       );
-    } catch (error) {
-      this.logger.error('Failed to generate content with Claude', error as Error);
+    } catch (claudeError) {
+      this.logger.warn('Claude API failed, attempting OpenAI fallback', claudeError as Error);
+
+      // Try OpenAI as fallback
+      if (validateOpenAIConfig()) {
+        try {
+          const openai = getOpenAIClient();
+          const response = await openai.chat.completions.create({
+            model: process.env.OPENAI_MODEL || 'gpt-4o',
+            max_tokens: 4096,
+            messages: [
+              {
+                role: 'user',
+                content: prompt,
+              },
+            ],
+          });
+
+          const content = response.choices[0]?.message?.content;
+          if (content) {
+            this.logger.info('OpenAI fallback succeeded');
+            return content;
+          }
+
+          throw new Error('No content in OpenAI response');
+        } catch (openaiError) {
+          this.logger.error('OpenAI fallback also failed', openaiError as Error);
+        }
+      }
+
+      // Both failed
+      this.logger.error('Both Claude and OpenAI failed');
       throw new JarvisError(
         ErrorCode.INTEGRATION_ERROR,
-        'Failed to generate content with Claude',
-        { error, prompt: prompt.substring(0, 100) },
+        'Failed to generate content with both Claude and OpenAI',
+        { claudeError, prompt: prompt.substring(0, 100) },
         true
       );
     }

@@ -74,12 +74,16 @@ export interface DecisionResult {
   reasoning: string;
   /** Risk level of the task */
   riskLevel: RiskLevel;
+  /** Whether this decision requires human approval */
+  requiresApproval?: boolean;
   /** Estimated impact of executing this task */
-  estimatedImpact?: {
+  estimatedImpact: {
     /** Financial impact in USD */
     financial?: number;
     /** Reputational risk level */
     reputational?: 'low' | 'medium' | 'high';
+    /** Description of impact */
+    description: string;
     /** Whether the action is reversible */
     reversibility?: boolean;
   };
@@ -100,13 +104,13 @@ export const DecisionResultSchema = z.object({
   confidence: z.number().min(0).max(1),
   reasoning: z.string().min(1),
   riskLevel: RiskLevelSchema,
-  estimatedImpact: z
-    .object({
-      financial: z.number().optional(),
-      reputational: z.enum(['low', 'medium', 'high']).optional(),
-      reversibility: z.boolean().optional(),
-    })
-    .optional(),
+  requiresApproval: z.boolean().optional(),
+  estimatedImpact: z.object({
+    financial: z.number().optional(),
+    reputational: z.enum(['low', 'medium', 'high']).optional(),
+    description: z.string(),
+    reversibility: z.boolean().optional(),
+  }),
   alternatives: z
     .array(
       z.object({

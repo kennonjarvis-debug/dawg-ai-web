@@ -58,9 +58,9 @@ export class JarvisError extends Error {
 
     this.code = code;
     this.details = details;
-    this.recoverable = recoverable ?? metadata.recoverable;
+    this.recoverable = recoverable ?? metadata?.recoverable ?? true;
     this.timestamp = new Date();
-    this.strategy = metadata.defaultStrategy;
+    this.strategy = metadata?.defaultStrategy ?? 'failFast';
     this.context = context;
 
     // Capture stack trace
@@ -354,5 +354,6 @@ export function getErrorContext(error: Error): ErrorContext | undefined {
   return undefined;
 }
 
-// Export types
-export { ErrorCode, ERROR_METADATA, ErrorContext, RecoveryStrategy } from '../types/errors';
+// Re-export types already imported above
+export type { ErrorContext };
+export { ErrorCode, ERROR_METADATA, RecoveryStrategy };

@@ -39,15 +39,17 @@ export interface AgentConfig {
   /** Human-readable agent name */
   name: string;
   /** List of capabilities this agent provides */
-  capabilities: AgentCapability[];
+  capabilities?: AgentCapability[];
   /** Integration adapters available to this agent */
   integrations: Record<string, any>;
   /** Anthropic API client for LLM operations */
-  llmClient: any; // TODO: Type this properly when Anthropic client is imported
+  anthropicClient?: any;
   /** Decision engine instance */
-  decisionEngine: any; // TODO: Type this properly when DecisionEngine is available
+  decisionEngine?: any;
   /** Memory system instance */
-  memory: any; // TODO: Type this properly when MemorySystem is available
+  memory?: any;
+  /** Approval queue instance */
+  approvalQueue?: any;
 }
 
 /**

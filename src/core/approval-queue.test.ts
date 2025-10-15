@@ -10,9 +10,23 @@ import { ApprovalRequest, NotificationChannel } from '../types/approvals';
 
 // Mock Supabase client
 const createMockSupabaseClient = () => {
+  const mockRequest = {
+    id: 'req-123',
+    task_id: 'task-123',
+    task_type: TaskType.MARKETING_SOCIAL_POST,
+    requested_action: 'Test action',
+    reasoning: 'Test reasoning',
+    risk_level: RiskLevel.MEDIUM,
+    estimated_impact: { description: 'Test impact' },
+    requested_at: new Date().toISOString(),
+    expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+    metadata: {},
+    status: 'pending',
+  };
+
   return {
     from: vi.fn(() => ({
-      insert: vi.fn().mockReturnValue({ error: null }),
+      insert: vi.fn().mockResolvedValue({ error: null }),
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnThis(),
         is: vi.fn().mockReturnThis(),
@@ -22,7 +36,7 @@ const createMockSupabaseClient = () => {
         lt: vi.fn().mockReturnThis(),
         order: vi.fn().mockReturnThis(),
         limit: vi.fn().mockReturnThis(),
-        single: vi.fn().mockResolvedValue({ data: null, error: null }),
+        single: vi.fn().mockResolvedValue({ data: mockRequest, error: null }),
         then: vi.fn((callback) =>
           callback({ data: [], error: null, count: 0 })
         ),

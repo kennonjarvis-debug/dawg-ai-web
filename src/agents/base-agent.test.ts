@@ -28,7 +28,6 @@ class TestAgent extends BaseAgent {
       data: { message: 'Test executed', taskData: task.data },
       timestamp: new Date(),
       executedBy: this.id,
-      message: 'Task completed successfully',
     };
   }
 }
@@ -40,7 +39,7 @@ class ErrorTestAgent extends BaseAgent {
   }
 
   canHandle(task: TaskRequest): boolean {
-    return task.type === 'test.error';
+    return this.getSupportedTaskTypes().includes(task.type);
   }
 
   async executeTask(task: TaskRequest): Promise<TaskResult> {
@@ -90,7 +89,11 @@ describe('BaseAgent', () => {
       id: 'test-agent',
       name: 'Test Agent',
       capabilities: [
-        { name: 'testing', description: 'Test capability', enabled: true },
+        {
+          taskType: 'marketing.social.post' as TaskType,
+          description: 'Test capability',
+          requiredIntegrations: [],
+        },
       ],
       integrations: {},
       decisionEngine: mockDecisionEngine,
@@ -108,7 +111,7 @@ describe('BaseAgent', () => {
 
     it('should set status to idle on initialization', () => {
       const status = agent.getStatus();
-      expect(status.status).toBe('idle');
+      expect(status.statusMessage).toBe('idle');
     });
   });
 
@@ -162,10 +165,10 @@ describe('BaseAgent', () => {
 
       const result = await agent.execute(task);
 
-      expect(result.success).toBe(true);
+      expect(result.status).toBe('completed');
       expect(result.status).toBe('completed');
       expect(result.taskId).toBe('task-123');
-      expect(result.executedBy).toBe('test-agent');
+      expect(result.agentId).toBe('test-agent');
       expect(mockDecisionEngine.evaluate).toHaveBeenCalled();
       expect(mockMemory.storeEntry).toHaveBeenCalled();
     });
@@ -258,8 +261,8 @@ describe('BaseAgent', () => {
       const result = await agent.execute(task);
 
       expect(result.status).toBe('awaiting_approval');
-      expect(result.success).toBe(false);
-      expect(result.data).toHaveProperty('requestId', 'req-123');
+      expect(result.status).toBe('failed');
+      expect(result.result).toHaveProperty('requestId', 'req-123');
       expect(mockApprovalQueue.requestApproval).toHaveBeenCalled();
     });
 
@@ -339,7 +342,7 @@ describe('BaseAgent', () => {
 
       // Status should be idle after completion
       const status = agent.getStatus();
-      expect(status.status).toBe('idle');
+      expect(status.statusMessage).toBe('idle');
     });
   });
 
