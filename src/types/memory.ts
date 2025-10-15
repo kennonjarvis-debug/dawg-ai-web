@@ -72,6 +72,8 @@ export interface QueryOptions {
   type?: MemoryType;
   /** Filter by agent ID */
   agentId?: string;
+  /** Filter by task ID */
+  taskId?: string;
   /** Filter by tags (any match) */
   tags?: string[];
   /** Only return memories after this date */
@@ -92,6 +94,7 @@ export interface QueryOptions {
 export const QueryOptionsSchema = z.object({
   type: MemoryTypeSchema.optional(),
   agentId: z.string().optional(),
+  taskId: z.string().uuid().optional(),
   tags: z.array(z.string()).optional(),
   since: z.date().optional(),
   limit: z.number().int().positive().optional(),
@@ -230,7 +233,7 @@ export function isMemoryType(value: any): value is MemoryType {
  * Helper to validate memory entry at runtime
  */
 export function validateMemoryEntry(data: unknown): MemoryEntry {
-  return MemoryEntrySchema.parse(data);
+  return MemoryEntrySchema.parse(data) as MemoryEntry;
 }
 
 /**
@@ -256,7 +259,11 @@ export function createMemoryEntry(
   }
 ): Omit<MemoryEntry, 'id'> {
   return {
-    ...partial,
+    type: partial.type,
+    content: partial.content,
+    agentId: partial.agentId,
+    taskId: partial.taskId,
+    tags: partial.tags,
     timestamp: new Date(),
     importance: partial.importance ?? getDefaultImportance(partial.type),
   };

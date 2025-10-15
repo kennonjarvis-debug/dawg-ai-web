@@ -209,7 +209,7 @@ export function isAgentOperational(state: AgentLifecycleState): boolean {
  * Helper to validate agent config at runtime
  */
 export function validateAgentConfig(data: unknown): AgentConfig {
-  return AgentConfigSchema.parse(data);
+  return AgentConfigSchema.parse(data) as AgentConfig;
 }
 
 /**

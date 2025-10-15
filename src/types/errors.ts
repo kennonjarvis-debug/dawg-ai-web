@@ -187,3 +187,191 @@ export interface ErrorContext {
   /** Additional arbitrary context data */
   [key: string]: any;
 }
+
+/**
+ * Custom error class for Jarvis
+ *
+ * Extends the standard Error class with additional context and metadata
+ * specific to Jarvis operations.
+ */
+export class JarvisError extends Error {
+  /** Error code */
+  public readonly code: ErrorCode;
+  /** Additional error details */
+  public readonly details?: Record<string, any>;
+  /** Whether the error is recoverable */
+  public readonly recoverable: boolean;
+  /** Error context */
+  public readonly context?: ErrorContext;
+  /** When the error occurred */
+  public readonly timestamp: Date;
+
+  constructor(
+    code: ErrorCode,
+    message: string,
+    details?: Record<string, any>,
+    recoverable: boolean = true,
+    context?: ErrorContext
+  ) {
+    super(message);
+    this.name = 'JarvisError';
+    this.code = code;
+    this.details = details;
+    this.recoverable = recoverable;
+    this.context = context;
+    this.timestamp = new Date();
+
+    // Maintains proper stack trace for where error was thrown
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, JarvisError);
+    }
+  }
+
+  /**
+   * Convert error to JSON for logging/storage
+   */
+  toJSON(): ErrorJSON {
+    return {
+      name: this.name,
+      code: this.code,
+      message: this.message,
+      details: this.details,
+      recoverable: this.recoverable,
+      context: this.context,
+      timestamp: this.timestamp,
+      stack: this.stack,
+    };
+  }
+
+  /**
+   * Create JarvisError from JSON
+   */
+  static fromJSON(json: ErrorJSON): JarvisError {
+    const error = new JarvisError(
+      json.code,
+      json.message,
+      json.details,
+      json.recoverable,
+      json.context
+    );
+    if (json.stack) {
+      error.stack = json.stack;
+    }
+    return error;
+  }
+}
+
+/**
+ * JSON representation of a JarvisError
+ */
+export interface ErrorJSON {
+  /** Error class name */
+  name: string;
+  /** Error code */
+  code: ErrorCode;
+  /** Error message */
+  message: string;
+  /** Additional details */
+  details?: Record<string, any>;
+  /** Whether recoverable */
+  recoverable: boolean;
+  /** Error context */
+  context?: ErrorContext;
+  /** When error occurred */
+  timestamp: Date;
+  /** Stack trace */
+  stack?: string;
+}
+
+/**
+ * Error statistics for monitoring
+ */
+export interface ErrorStats {
+  /** Total error count */
+  total: number;
+  /** Errors by code */
+  byCode: Record<ErrorCode, number>;
+  /** Errors by agent */
+  byAgent: Record<string, number>;
+  /** Errors by integration */
+  byIntegration: Record<string, number>;
+  /** Recoverable vs non-recoverable */
+  recoverable: number;
+  nonRecoverable: number;
+  /** Time period for stats */
+  period: {
+    start: Date;
+    end: Date;
+  };
+}
+
+/**
+ * Type guard to check if an error is a JarvisError
+ */
+export function isJarvisError(error: any): error is JarvisError {
+  return error instanceof JarvisError;
+}
+
+/**
+ * Type guard to check if error code is valid
+ */
+export function isErrorCode(value: any): value is ErrorCode {
+  return Object.values(ErrorCode).includes(value);
+}
+
+/**
+ * Get user-friendly error message
+ */
+export function getUserFriendlyMessage(error: Error | JarvisError): string {
+  if (isJarvisError(error)) {
+    const metadata = ERROR_METADATA[error.code];
+    return metadata?.userMessage || error.message;
+  }
+  return error.message || 'An unexpected error occurred.';
+}
+
+/**
+ * Get recovery strategy for an error
+ */
+export function getRecoveryStrategy(error: Error | JarvisError): RecoveryStrategy {
+  if (isJarvisError(error)) {
+    return ERROR_METADATA[error.code]?.defaultStrategy || RecoveryStrategy.NO_RECOVERY;
+  }
+  return RecoveryStrategy.ALERT_ADMIN;
+}
+
+/**
+ * Check if error is recoverable
+ */
+export function isRecoverable(error: Error | JarvisError): boolean {
+  if (isJarvisError(error)) {
+    return error.recoverable;
+  }
+  return false;
+}
+
+/**
+ * Wrap a standard Error in a JarvisError
+ */
+export function wrapError(
+  error: Error,
+  code: ErrorCode = ErrorCode.INTERNAL_ERROR,
+  details?: Record<string, any>,
+  context?: ErrorContext
+): JarvisError {
+  if (isJarvisError(error)) {
+    return error;
+  }
+
+  return new JarvisError(
+    code,
+    error.message,
+    {
+      ...details,
+      originalError: error.name,
+      originalStack: error.stack,
+    },
+    ERROR_METADATA[code]?.recoverable ?? false,
+    context
+  );
+}
