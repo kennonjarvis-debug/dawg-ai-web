@@ -19,6 +19,7 @@ import {
 import AuthModal from '$lib/components/cloud/AuthModal.svelte';
 import FileUploader from '$lib/components/cloud/FileUploader.svelte';
 import AIPanel from '$lib/components/ai/AIPanel.svelte';
+import AIAudioPanel from '$lib/components/ai/AIAudioPanel.svelte';
 import { getAudioEngine } from '$lib/audio';
 
 let isInitializing = true;
@@ -389,7 +390,7 @@ function handleAuthSuccess() {
 			<!-- Right Sidebar - Inspector & AI -->
 			<div class="w-80 glass border-l border-white/10 overflow-y-auto">
 				<div class="p-4">
-					<AIPanel />
+					<AIAudioPanel />
 				</div>
 				<div class="border-t border-white/10 mt-4"></div>
 				<InspectorPanel />
