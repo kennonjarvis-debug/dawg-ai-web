@@ -17,11 +17,12 @@ let supabaseInstance: SupabaseClient | null = null;
 
 if (supabaseUrl && supabaseAnonKey) {
   supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
-} else if (!isTest && !isDevelopment) {
-  // Only throw in production if credentials are missing
-  throw new Error('Missing Supabase environment variables');
 } else {
-  console.warn('⚠️ Running without Supabase credentials (test/dev mode)');
+  // Allow running without Supabase - auth features will be disabled
+  console.warn('⚠️ Running without Supabase credentials - auth features disabled');
+  if (!isTest && !isDevelopment) {
+    console.error('PRODUCTION WARNING: Supabase environment variables not configured');
+  }
 }
 
 export const supabase: SupabaseClient | null = supabaseInstance;
