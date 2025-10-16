@@ -51,6 +51,10 @@ function App() {
           path="/dashboard"
           element={user ? <DashboardPage user={user} /> : <Navigate to="/login" />}
         />
+        <Route
+          path="/auth/callback"
+          element={user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+        />
       </Routes>
     </Router>
   );

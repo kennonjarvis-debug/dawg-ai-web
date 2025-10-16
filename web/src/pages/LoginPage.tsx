@@ -23,7 +23,15 @@ export default function LoginPage() {
 
       if (error) throw error;
 
-      navigate('/dashboard');
+      // Check if user is admin (kennonjarvis@gmail.com) and redirect to Observatory
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.email === 'kennonjarvis@gmail.com') {
+        // Use environment variable for Observatory URL, fallback to localhost:5173
+        const observatoryUrl = import.meta.env.VITE_OBSERVATORY_URL || 'http://localhost:5173';
+        window.location.href = observatoryUrl;
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error: any) {
       setError(error.message || 'Failed to login');
     } finally {
@@ -33,10 +41,10 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { error, data } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}/auth/callback`,
         },
       });
 
