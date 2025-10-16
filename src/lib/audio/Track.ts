@@ -7,6 +7,9 @@
 import * as Tone from 'tone';
 import type { UUID, Decibels, Color } from '../types/core';
 import { Clip } from './Clip';
+import { MIDIClip } from './midi/MIDIClip';
+import { getMIDIManager } from './midi/MIDIManager';
+import type { MIDIInstrumentConfig } from './midi/types';
 import { EffectsRack } from './effects/EffectsRack';
 import { TrackError, RecordingError, ErrorCode } from './errors';
 
@@ -40,12 +43,16 @@ export class Track {
 
 	// Players and clips
 	private clips: Clip[] = [];
+	private midiClips: MIDIClip[] = [];
 	private players: Map<string, Tone.Player> = new Map();
 
 	// Recording
 	private recorder: Tone.Recorder | null = null;
 	private recordingInput: Tone.UserMedia | null = null;
 	private isRecording: boolean = false;
+
+	// MIDI
+	private instrument: any = null; // Tone.js instrument for MIDI playback
 
 	// Sends (for aux/bus routing)
 	private sends: Map<UUID, Tone.Send> = new Map();
@@ -146,6 +153,49 @@ export class Track {
 	}
 
 	/**
+	 * Add a MIDI clip to the track
+	 * @param clip - MIDI clip to add
+	 */
+	addMIDIClip(clip: MIDIClip): void {
+		// Validate clip belongs to this track
+		if (clip.trackId !== this.id) {
+			clip.trackId = this.id;
+		}
+
+		this.midiClips.push(clip);
+
+		// Schedule MIDI clip for playback
+		this.scheduleMIDIClip(clip);
+	}
+
+	/**
+	 * Remove a MIDI clip from the track
+	 * @param clipId - MIDI clip ID to remove
+	 */
+	removeMIDIClip(clipId: UUID): void {
+		const index = this.midiClips.findIndex((c) => c.id === clipId);
+		if (index !== -1) {
+			const clip = this.midiClips[index];
+			this.unscheduleMIDIClip(clip);
+			this.midiClips.splice(index, 1);
+		}
+	}
+
+	/**
+	 * Get all MIDI clips
+	 */
+	getMIDIClips(): MIDIClip[] {
+		return [...this.midiClips];
+	}
+
+	/**
+	 * Get all clips (audio and MIDI)
+	 */
+	getAllClips(): (Clip | MIDIClip)[] {
+		return [...this.clips, ...this.midiClips];
+	}
+
+	/**
 	 * Schedule a clip for playback
 	 * @param clip - Clip to schedule
 	 */
@@ -174,6 +224,24 @@ export class Track {
 			player.dispose();
 			this.players.delete(clip.id);
 		}
+	}
+
+	/**
+	 * Schedule a MIDI clip for playback
+	 * @param clip - MIDI clip to schedule
+	 */
+	private scheduleMIDIClip(clip: MIDIClip): void {
+		const midiManager = getMIDIManager();
+		midiManager.scheduleClip(clip, this.id);
+	}
+
+	/**
+	 * Unschedule a MIDI clip
+	 * @param clip - MIDI clip to unschedule
+	 */
+	private unscheduleMIDIClip(clip: MIDIClip): void {
+		const midiManager = getMIDIManager();
+		midiManager.stopClip(clip.id);
 	}
 
 	// ===== Recording =====
@@ -278,6 +346,107 @@ export class Track {
 				this.recorder = null;
 			}
 		}
+	}
+
+	// ===== MIDI Recording =====
+
+	/**
+	 * Start MIDI recording
+	 */
+	startMIDIRecording(): void {
+		if (this.type !== 'midi') {
+			throw new RecordingError(
+				'Only MIDI tracks can record MIDI',
+				ErrorCode.INVALID_TRACK_TYPE
+			);
+		}
+
+		if (this.isRecording) {
+			throw new RecordingError(
+				'Track is already recording',
+				ErrorCode.RECORDING_ALREADY_STARTED
+			);
+		}
+
+		try {
+			const midiManager = getMIDIManager();
+			midiManager.startRecording(this.id);
+			this.isRecording = true;
+
+			console.log(`Track ${this.name}: MIDI recording started`);
+		} catch (error) {
+			throw new RecordingError(
+				`Failed to start MIDI recording: ${error}`,
+				ErrorCode.OPERATION_FAILED
+			);
+		}
+	}
+
+	/**
+	 * Stop MIDI recording and create MIDI clip
+	 * @returns Created MIDI clip or null if no notes recorded
+	 */
+	stopMIDIRecording(): MIDIClip | null {
+		if (!this.isRecording) {
+			throw new RecordingError(
+				'Track is not recording',
+				ErrorCode.RECORDING_NOT_STARTED
+			);
+		}
+
+		try {
+			const midiManager = getMIDIManager();
+			const clip = midiManager.stopRecording(this.id);
+			this.isRecording = false;
+
+			if (clip) {
+				this.addMIDIClip(clip);
+				console.log(`Track ${this.name}: MIDI recording stopped, clip created`);
+			} else {
+				console.warn(`Track ${this.name}: MIDI recording stopped, no notes recorded`);
+			}
+
+			return clip;
+		} catch (error) {
+			this.isRecording = false;
+			throw new RecordingError(
+				`Failed to stop MIDI recording: ${error}`,
+				ErrorCode.OPERATION_FAILED
+			);
+		}
+	}
+
+	// ===== MIDI Instrument =====
+
+	/**
+	 * Set MIDI instrument for this track
+	 * @param config - Instrument configuration
+	 */
+	setMIDIInstrument(config: MIDIInstrumentConfig): void {
+		if (this.type !== 'midi') {
+			throw new TrackError(
+				'Only MIDI tracks can have instruments',
+				ErrorCode.INVALID_TRACK_TYPE,
+				this.id
+			);
+		}
+
+		const midiManager = getMIDIManager();
+		this.instrument = midiManager.createInstrument(this.id, config);
+
+		// Connect instrument to track input
+		if (this.instrument && this.instrument.connect) {
+			this.instrument.connect(this.input);
+		}
+
+		console.log(`Track ${this.name}: MIDI instrument set to ${config.type}`);
+	}
+
+	/**
+	 * Get MIDI instrument
+	 */
+	getMIDIInstrument(): any {
+		return this.instrument;
 	}
 
 	// ===== Effects =====
@@ -455,7 +624,8 @@ export class Track {
 			mute: this.isMuted(),
 			solo: this.isSoloed(),
 			effects: this.effectsRack.toJSON(),
-			clips: this.clips.map((clip) => clip.toJSON())
+			clips: this.clips.map((clip) => clip.toJSON()),
+			midiClips: this.midiClips.map((clip) => clip.toJSON())
 		};
 	}
 
@@ -467,12 +637,32 @@ export class Track {
 	dispose(): void {
 		// Stop recording if active
 		if (this.isRecording) {
-			this.stopRecording().catch(console.error);
+			if (this.type === 'audio') {
+				this.stopRecording().catch(console.error);
+			} else if (this.type === 'midi') {
+				try {
+					this.stopMIDIRecording();
+				} catch (e) {
+					console.error(e);
+				}
+			}
 		}
 
 		// Dispose players
 		this.players.forEach((player) => player.dispose());
 		this.players.clear();
+
+		// Dispose MIDI clips
+		this.midiClips.forEach((clip) => {
+			this.unscheduleMIDIClip(clip);
+		});
+		this.midiClips = [];
+
+		// Dispose MIDI instrument
+		if (this.instrument && this.instrument.dispose) {
+			this.instrument.dispose();
+			this.instrument = null;
+		}
 
 		// Dispose sends
 		this.sends.forEach((send) => send.dispose());

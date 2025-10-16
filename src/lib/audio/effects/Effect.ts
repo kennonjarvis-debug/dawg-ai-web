@@ -188,6 +188,19 @@ export abstract class Effect {
 	protected abstract onParameterChange(name: string, value: number): void;
 
 	/**
+	 * Apply effect to offline audio context for rendering
+	 * @param offlineContext - Offline audio context
+	 * @param source - Source node to process
+	 * @param destination - Destination node
+	 * @returns Processed audio node
+	 */
+	abstract applyToOfflineContext(
+		offlineContext: OfflineAudioContext,
+		source: AudioNode,
+		destination: AudioNode
+	): AudioNode;
+
+	/**
 	 * Serialize effect to JSON
 	 */
 	toJSON(): EffectConfig {

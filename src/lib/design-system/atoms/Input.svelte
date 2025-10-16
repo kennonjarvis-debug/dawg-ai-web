@@ -6,7 +6,7 @@
 
   type InputProps = {
     type?: 'text' | 'number' | 'email' | 'password' | 'search';
-    value: string | number;
+    value?: string | number;
     placeholder?: string;
     label?: string;
     error?: string;
@@ -36,7 +36,7 @@
     class: className = '',
     oninput,
     onchange
-  }: InputProps = $props();
+  } = $props();
 
   const sizeClasses = {
     xs: 'px-2 py-1 text-2xs',
