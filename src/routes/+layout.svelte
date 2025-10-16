@@ -4,6 +4,8 @@
 	import { authStore } from '$lib/stores/authStore';
 	import { onMount } from 'svelte';
 	import { getAudioEngine } from '$lib/audio';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 
 	let isTestMode = false;
 
@@ -54,10 +56,49 @@
 			alert('Quantize test - no audio engine initialized yet');
 		}
 	}
+
+	// Navigation items
+	const navItems = [
+		{ label: 'Home', path: '/' },
+		{ label: 'DAW', path: '/daw' },
+		{ label: 'Pricing', path: '/pricing' }
+	];
+
+	$: currentPath = $page.url.pathname;
 </script>
 
 <ThemeProvider>
-	<slot />
+	<!-- Navigation Bar -->
+	<nav class="fixed top-0 left-0 right-0 z-40 glass-strong border-b border-white/10">
+		<div class="max-w-7xl mx-auto px-8 py-4">
+			<div class="flex items-center justify-between">
+				<!-- Logo -->
+				<button
+					onclick={() => goto('/')}
+					class="text-2xl font-bold bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent hover:opacity-80 transition-opacity"
+				>
+					DAWG AI
+				</button>
+
+				<!-- Nav Links -->
+				<div class="flex items-center gap-6">
+					{#each navItems as item}
+						<button
+							onclick={() => goto(item.path)}
+							class="text-white/80 hover:text-white transition-colors {currentPath === item.path ? 'text-accent-primary font-semibold' : ''}"
+						>
+							{item.label}
+						</button>
+					{/each}
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Main Content (with top padding for fixed nav) -->
+	<div class="pt-20">
+		<slot />
+	</div>
 
 	<!-- Test mode: floating quantize button for E2E tests -->
 	{#if isTestMode}
