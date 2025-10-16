@@ -305,3 +305,4 @@ Design inspired by:
 Built with ❤️ for music producers
 
 **Module 1 Complete** ✅
+
