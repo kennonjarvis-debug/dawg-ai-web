@@ -11,8 +11,7 @@ import { MIDIEditor, VelocityEditor, type Tool, type GridDivision, type MIDINote
 import { Button, Icon, Toggle } from '$lib/design-system';
 import type { UUID } from '$lib/types/core';
 
-export let trackId: UUID;
-export let notes: MIDINote[] = [];
+let { trackId, notes = [] }: { trackId: UUID; notes?: MIDINote[] } = $props();
 
 let pianoRollCanvas: HTMLCanvasElement;
 let velocityCanvas: HTMLCanvasElement;

@@ -1,0 +1,41 @@
+{
+  "name": "@dawg-ai/clap-bridge",
+  "version": "0.1.0",
+  "description": "Native CLAP audio plugin bridge for DAWG AI",
+  "main": "index.node",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "cargo build --release && napi build --platform --release",
+    "build:debug": "cargo build && napi build --platform",
+    "test": "cargo test",
+    "clean": "cargo clean"
+  },
+  "napi": {
+    "name": "clap-bridge",
+    "triples": {
+      "defaults": true,
+      "additional": [
+        "x86_64-apple-darwin",
+        "aarch64-apple-darwin",
+        "x86_64-pc-windows-msvc",
+        "x86_64-unknown-linux-gnu"
+      ]
+    }
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^2.16.0"
+  },
+  "keywords": [
+    "audio",
+    "plugin",
+    "clap",
+    "daw",
+    "music",
+    "production"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/dawg-ai"
+  }
+}

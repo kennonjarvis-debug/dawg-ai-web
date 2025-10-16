@@ -22,10 +22,10 @@ import AIPanel from '$lib/components/ai/AIPanel.svelte';
 import AIAudioPanel from '$lib/components/ai/AIAudioPanel.svelte';
 import { getAudioEngine } from '$lib/audio';
 
-let isInitializing = true;
-let error: string | null = null;
-let showAuthModal = false;
-let showFileUploader = false;
+let isInitializing = $state(true);
+let error = $state<string | null>(null);
+let showAuthModal = $state(false);
+let showFileUploader = $state(false);
 
 // Transport state
 let playing = $state(false);
@@ -35,7 +35,7 @@ let tempo = $state(120);
 let position = $state('00:00:00');
 
 // View state
-let currentView: 'arrangement' | 'mixer' | 'browser' = 'arrangement';
+let currentView = $state<'arrangement' | 'mixer' | 'browser'>('arrangement');
 
 // Sample mixer channels (will be populated from audio engine)
 let channels = $state([
