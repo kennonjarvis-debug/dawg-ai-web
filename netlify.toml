@@ -2,12 +2,7 @@
   command = "npm run build"
   publish = ".svelte-kit/netlify"
 
-[[plugins]]
-  package = "@sveltejs/adapter-netlify"
-
 [build.environment]
   NODE_VERSION = "22"
-
-[context.production.environment]
   VITE_SUPABASE_URL = "https://nvyebkzrrvmepbdejspr.supabase.co"
   VITE_SUPABASE_ANON_KEY = "sb_publishable_DNVyXuddwtKQFr2G1qEa-A_FClW-DtG"
