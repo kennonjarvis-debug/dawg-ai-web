@@ -71,6 +71,8 @@
       size="md"
       onclick={handlePlay}
       aria-label={playing ? 'Pause' : 'Play'}
+      data-testid="play-button"
+      class={playing ? 'playing' : ''}
     >
       <Icon name={playing ? 'pause' : 'play'} size="md" />
     </Button>
@@ -80,6 +82,7 @@
       size="md"
       onclick={handleStop}
       aria-label="Stop"
+      data-testid="stop-button"
     >
       <Icon name="stop" size="md" />
     </Button>
@@ -122,6 +125,7 @@
         step={1}
         size="sm"
         onchange={handleTempoChange}
+        data-testid="tempo-input"
       />
     </div>
   </div>

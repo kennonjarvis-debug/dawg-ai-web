@@ -1,0 +1,202 @@
+<testsuites id="" name="" tests="75" failures="0" skipped="5" errors="0" time="37.691975">
+<testsuite name="ai/ai-audio-processing.spec.ts" timestamp="2025-10-16T08:43:17.330Z" hostname="chromium" tests="10" failures="0" skipped="1" time="23.073" errors="0">
+<testcase name="AI Audio Processing › should display AI Audio Processing panel" classname="ai/ai-audio-processing.spec.ts" time="3.033">
+</testcase>
+<testcase name="AI Audio Processing › EQ Analyzer: should analyze audio and provide suggestions" classname="ai/ai-audio-processing.spec.ts" time="3.078">
+</testcase>
+<testcase name="AI Audio Processing › Auto Mastering: should optimize mastering chain" classname="ai/ai-audio-processing.spec.ts" time="3.225">
+</testcase>
+<testcase name="AI Audio Processing › Auto Mastering: should detect genre automatically" classname="ai/ai-audio-processing.spec.ts" time="3.209">
+</testcase>
+<testcase name="AI Audio Processing › Neural Model: should display all 5 hardware models" classname="ai/ai-audio-processing.spec.ts" time="3.178">
+</testcase>
+<testcase name="AI Audio Processing › Neural Model: should show model details on selection" classname="ai/ai-audio-processing.spec.ts" time="1.541">
+</testcase>
+<testcase name="AI Audio Processing › should switch between tabs without losing state" classname="ai/ai-audio-processing.spec.ts" time="1.7">
+</testcase>
+<testcase name="AI Audio Processing › accessibility: AI Audio Panel should be WCAG compliant" classname="ai/ai-audio-processing.spec.ts" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Audio Processing › performance: should load AI panel within 5 seconds" classname="ai/ai-audio-processing.spec.ts" time="1.584">
+</testcase>
+<testcase name="AI Audio Processing › should handle errors gracefully" classname="ai/ai-audio-processing.spec.ts" time="2.525">
+</testcase>
+</testsuite>
+<testsuite name="daw/complete-workflow.spec.ts" timestamp="2025-10-16T08:43:17.330Z" hostname="chromium" tests="5" failures="0" skipped="0" time="6.933" errors="0">
+<testcase name="Complete DAW Workflow › should complete full music production workflow" classname="daw/complete-workflow.spec.ts" time="1.762">
+</testcase>
+<testcase name="Complete DAW Workflow › should handle keyboard shortcuts" classname="daw/complete-workflow.spec.ts" time="1.087">
+</testcase>
+<testcase name="Complete DAW Workflow › should quantize MIDI notes" classname="daw/complete-workflow.spec.ts" time="1.682">
+</testcase>
+<testcase name="Complete DAW Workflow › should switch between views" classname="daw/complete-workflow.spec.ts" time="1.299">
+</testcase>
+<testcase name="Complete DAW Workflow › should warn before leaving with unsaved changes" classname="daw/complete-workflow.spec.ts" time="1.103">
+</testcase>
+</testsuite>
+<testsuite name="ai/ai-audio-processing.spec.ts" timestamp="2025-10-16T08:43:17.330Z" hostname="firefox" tests="10" failures="0" skipped="1" time="20.085" errors="0">
+<testcase name="AI Audio Processing › should display AI Audio Processing panel" classname="ai/ai-audio-processing.spec.ts" time="2.457">
+</testcase>
+<testcase name="AI Audio Processing › EQ Analyzer: should analyze audio and provide suggestions" classname="ai/ai-audio-processing.spec.ts" time="2.41">
+</testcase>
+<testcase name="AI Audio Processing › Auto Mastering: should optimize mastering chain" classname="ai/ai-audio-processing.spec.ts" time="2.514">
+</testcase>
+<testcase name="AI Audio Processing › Auto Mastering: should detect genre automatically" classname="ai/ai-audio-processing.spec.ts" time="2.651">
+</testcase>
+<testcase name="AI Audio Processing › Neural Model: should display all 5 hardware models" classname="ai/ai-audio-processing.spec.ts" time="2.716">
+</testcase>
+<testcase name="AI Audio Processing › Neural Model: should show model details on selection" classname="ai/ai-audio-processing.spec.ts" time="1.543">
+</testcase>
+<testcase name="AI Audio Processing › should switch between tabs without losing state" classname="ai/ai-audio-processing.spec.ts" time="1.772">
+</testcase>
+<testcase name="AI Audio Processing › accessibility: AI Audio Panel should be WCAG compliant" classname="ai/ai-audio-processing.spec.ts" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Audio Processing › performance: should load AI panel within 5 seconds" classname="ai/ai-audio-processing.spec.ts" time="1.582">
+</testcase>
+<testcase name="AI Audio Processing › should handle errors gracefully" classname="ai/ai-audio-processing.spec.ts" time="2.44">
+</testcase>
+</testsuite>
+<testsuite name="daw/complete-workflow.spec.ts" timestamp="2025-10-16T08:43:17.330Z" hostname="firefox" tests="5" failures="0" skipped="0" time="7.751" errors="0">
+<testcase name="Complete DAW Workflow › should complete full music production workflow" classname="daw/complete-workflow.spec.ts" time="1.728">
+</testcase>
+<testcase name="Complete DAW Workflow › should handle keyboard shortcuts" classname="daw/complete-workflow.spec.ts" time="1.376">
+</testcase>
+<testcase name="Complete DAW Workflow › should quantize MIDI notes" classname="daw/complete-workflow.spec.ts" time="1.859">
+</testcase>
+<testcase name="Complete DAW Workflow › should switch between views" classname="daw/complete-workflow.spec.ts" time="1.383">
+</testcase>
+<testcase name="Complete DAW Workflow › should warn before leaving with unsaved changes" classname="daw/complete-workflow.spec.ts" time="1.405">
+</testcase>
+</testsuite>
+<testsuite name="ai/ai-audio-processing.spec.ts" timestamp="2025-10-16T08:43:17.330Z" hostname="webkit" tests="10" failures="0" skipped="1" time="20.203" errors="0">
+<testcase name="AI Audio Processing › should display AI Audio Processing panel" classname="ai/ai-audio-processing.spec.ts" time="2.432">
+</testcase>
+<testcase name="AI Audio Processing › EQ Analyzer: should analyze audio and provide suggestions" classname="ai/ai-audio-processing.spec.ts" time="2.309">
+</testcase>
+<testcase name="AI Audio Processing › Auto Mastering: should optimize mastering chain" classname="ai/ai-audio-processing.spec.ts" time="2.671">
+</testcase>
+<testcase name="AI Audio Processing › Auto Mastering: should detect genre automatically" classname="ai/ai-audio-processing.spec.ts" time="2.591">
+</testcase>
+<testcase name="AI Audio Processing › Neural Model: should display all 5 hardware models" classname="ai/ai-audio-processing.spec.ts" time="2.308">
+</testcase>
+<testcase name="AI Audio Processing › Neural Model: should show model details on selection" classname="ai/ai-audio-processing.spec.ts" time="1.676">
+</testcase>
+<testcase name="AI Audio Processing › should switch between tabs without losing state" classname="ai/ai-audio-processing.spec.ts" time="1.757">
+</testcase>
+<testcase name="AI Audio Processing › accessibility: AI Audio Panel should be WCAG compliant" classname="ai/ai-audio-processing.spec.ts" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Audio Processing › performance: should load AI panel within 5 seconds" classname="ai/ai-audio-processing.spec.ts" time="1.835">
+</testcase>
+<testcase name="AI Audio Processing › should handle errors gracefully" classname="ai/ai-audio-processing.spec.ts" time="2.624">
+</testcase>
+</testsuite>
+<testsuite name="daw/complete-workflow.spec.ts" timestamp="2025-10-16T08:43:17.330Z" hostname="webkit" tests="5" failures="0" skipped="0" time="8.415" errors="0">
+<testcase name="Complete DAW Workflow › should complete full music production workflow" classname="daw/complete-workflow.spec.ts" time="2.058">
+</testcase>
+<testcase name="Complete DAW Workflow › should handle keyboard shortcuts" classname="daw/complete-workflow.spec.ts" time="1.364">
+</testcase>
+<testcase name="Complete DAW Workflow › should quantize MIDI notes" classname="daw/complete-workflow.spec.ts" time="1.969">
+</testcase>
+<testcase name="Complete DAW Workflow › should switch between views" classname="daw/complete-workflow.spec.ts" time="1.642">
+</testcase>
+<testcase name="Complete DAW Workflow › should warn before leaving with unsaved changes" classname="daw/complete-workflow.spec.ts" time="1.382">
+</testcase>
+</testsuite>
+<testsuite name="ai/ai-audio-processing.spec.ts" timestamp="2025-10-16T08:43:17.330Z" hostname="Mobile Chrome" tests="10" failures="0" skipped="1" time="16.938" errors="0">
+<testcase name="AI Audio Processing › should display AI Audio Processing panel" classname="ai/ai-audio-processing.spec.ts" time="1.869">
+</testcase>
+<testcase name="AI Audio Processing › EQ Analyzer: should analyze audio and provide suggestions" classname="ai/ai-audio-processing.spec.ts" time="1.795">
+</testcase>
+<testcase name="AI Audio Processing › Auto Mastering: should optimize mastering chain" classname="ai/ai-audio-processing.spec.ts" time="2.023">
+</testcase>
+<testcase name="AI Audio Processing › Auto Mastering: should detect genre automatically" classname="ai/ai-audio-processing.spec.ts" time="1.968">
+</testcase>
+<testcase name="AI Audio Processing › Neural Model: should display all 5 hardware models" classname="ai/ai-audio-processing.spec.ts" time="1.798">
+</testcase>
+<testcase name="AI Audio Processing › Neural Model: should show model details on selection" classname="ai/ai-audio-processing.spec.ts" time="1.634">
+</testcase>
+<testcase name="AI Audio Processing › should switch between tabs without losing state" classname="ai/ai-audio-processing.spec.ts" time="1.779">
+</testcase>
+<testcase name="AI Audio Processing › accessibility: AI Audio Panel should be WCAG compliant" classname="ai/ai-audio-processing.spec.ts" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Audio Processing › performance: should load AI panel within 5 seconds" classname="ai/ai-audio-processing.spec.ts" time="1.508">
+</testcase>
+<testcase name="AI Audio Processing › should handle errors gracefully" classname="ai/ai-audio-processing.spec.ts" time="2.564">
+</testcase>
+</testsuite>
+<testsuite name="daw/complete-workflow.spec.ts" timestamp="2025-10-16T08:43:17.330Z" hostname="Mobile Chrome" tests="5" failures="0" skipped="0" time="7.657" errors="0">
+<testcase name="Complete DAW Workflow › should complete full music production workflow" classname="daw/complete-workflow.spec.ts" time="1.747">
+</testcase>
+<testcase name="Complete DAW Workflow › should handle keyboard shortcuts" classname="daw/complete-workflow.spec.ts" time="1.386">
+</testcase>
+<testcase name="Complete DAW Workflow › should quantize MIDI notes" classname="daw/complete-workflow.spec.ts" time="1.723">
+</testcase>
+<testcase name="Complete DAW Workflow › should switch between views" classname="daw/complete-workflow.spec.ts" time="1.455">
+</testcase>
+<testcase name="Complete DAW Workflow › should warn before leaving with unsaved changes" classname="daw/complete-workflow.spec.ts" time="1.346">
+</testcase>
+</testsuite>
+<testsuite name="ai/ai-audio-processing.spec.ts" timestamp="2025-10-16T08:43:17.330Z" hostname="Mobile Safari" tests="10" failures="0" skipped="1" time="16.079" errors="0">
+<testcase name="AI Audio Processing › should display AI Audio Processing panel" classname="ai/ai-audio-processing.spec.ts" time="1.755">
+</testcase>
+<testcase name="AI Audio Processing › EQ Analyzer: should analyze audio and provide suggestions" classname="ai/ai-audio-processing.spec.ts" time="1.869">
+</testcase>
+<testcase name="AI Audio Processing › Auto Mastering: should optimize mastering chain" classname="ai/ai-audio-processing.spec.ts" time="1.952">
+</testcase>
+<testcase name="AI Audio Processing › Auto Mastering: should detect genre automatically" classname="ai/ai-audio-processing.spec.ts" time="1.751">
+</testcase>
+<testcase name="AI Audio Processing › Neural Model: should display all 5 hardware models" classname="ai/ai-audio-processing.spec.ts" time="1.622">
+</testcase>
+<testcase name="AI Audio Processing › Neural Model: should show model details on selection" classname="ai/ai-audio-processing.spec.ts" time="1.539">
+</testcase>
+<testcase name="AI Audio Processing › should switch between tabs without losing state" classname="ai/ai-audio-processing.spec.ts" time="1.622">
+</testcase>
+<testcase name="AI Audio Processing › accessibility: AI Audio Panel should be WCAG compliant" classname="ai/ai-audio-processing.spec.ts" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Audio Processing › performance: should load AI panel within 5 seconds" classname="ai/ai-audio-processing.spec.ts" time="1.54">
+</testcase>
+<testcase name="AI Audio Processing › should handle errors gracefully" classname="ai/ai-audio-processing.spec.ts" time="2.429">
+</testcase>
+</testsuite>
+<testsuite name="daw/complete-workflow.spec.ts" timestamp="2025-10-16T08:43:17.330Z" hostname="Mobile Safari" tests="5" failures="0" skipped="0" time="7.726" errors="0">
+<testcase name="Complete DAW Workflow › should complete full music production workflow" classname="daw/complete-workflow.spec.ts" time="1.768">
+</testcase>
+<testcase name="Complete DAW Workflow › should handle keyboard shortcuts" classname="daw/complete-workflow.spec.ts" time="1.266">
+</testcase>
+<testcase name="Complete DAW Workflow › should quantize MIDI notes" classname="daw/complete-workflow.spec.ts" time="1.834">
+</testcase>
+<testcase name="Complete DAW Workflow › should switch between views" classname="daw/complete-workflow.spec.ts" time="1.657">
+</testcase>
+<testcase name="Complete DAW Workflow › should warn before leaving with unsaved changes" classname="daw/complete-workflow.spec.ts" time="1.201">
+</testcase>
+</testsuite>
+</testsuites>

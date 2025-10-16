@@ -12,6 +12,7 @@
     fullWidth?: boolean;
     class?: string;
     type?: 'button' | 'submit' | 'reset';
+    'data-testid'?: string;
     onclick?: () => void;
   };
 
@@ -23,6 +24,7 @@
     fullWidth = false,
     class: className = '',
     type = 'button',
+    'data-testid': dataTestId,
     onclick,
     children
   }: ButtonProps = $props();
@@ -47,6 +49,7 @@
   {type}
   disabled={disabled || loading}
   onclick={onclick}
+  data-testid={dataTestId}
   class="
     relative
     font-medium

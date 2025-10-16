@@ -17,6 +17,7 @@
     max?: number;
     step?: number;
     class?: string;
+    'data-testid'?: string;
     oninput?: (value: string | number) => void;
     onchange?: (value: string | number) => void;
   };
@@ -34,6 +35,7 @@
     max,
     step,
     class: className = '',
+    'data-testid': dataTestId,
     oninput,
     onchange
   } = $props();
@@ -80,6 +82,7 @@
     {max}
     {step}
     value={value}
+    data-testid={dataTestId}
     oninput={handleInput}
     onchange={handleChange}
     class="
