@@ -4,5 +4,63 @@
 
 [build.environment]
   NODE_VERSION = "22"
-  VITE_SUPABASE_URL = "https://nvyebkzrrvmepbdejspr.supabase.co"
-  VITE_SUPABASE_ANON_KEY = "sb_publishable_DNVyXuddwtKQFr2G1qEa-A_FClW-DtG"
+  # Secrets configured in Netlify dashboard (Environment Variables):
+  # - VITE_SUPABASE_URL
+  # - VITE_SUPABASE_ANON_KEY
+  # - ANTHROPIC_API_KEY
+  # - DEEPGRAM_API_KEY
+  # See: docs/DEPLOYMENT.md for configuration instructions
+
+# Security Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Prevent clickjacking attacks
+    X-Frame-Options = "DENY"
+
+    # Prevent MIME type sniffing
+    X-Content-Type-Options = "nosniff"
+
+    # Enable browser XSS protection
+    X-XSS-Protection = "1; mode=block"
+
+    # Referrer policy for privacy
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+    # Feature/Permissions policy (allow microphone for recording)
+    Permissions-Policy = "microphone=(self), camera=(), geolocation=(), payment=()"
+
+    # Content Security Policy
+    # Allows: self, inline scripts (SvelteKit), inline styles (Tailwind), Supabase, Anthropic, Deepgram
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval';
+      style-src 'self' 'unsafe-inline';
+      img-src 'self' data: https: blob:;
+      font-src 'self' data:;
+      connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.anthropic.com https://api.deepgram.com;
+      media-src 'self' blob: data:;
+      worker-src 'self' blob:;
+      frame-ancestors 'none';
+      base-uri 'self';
+      form-action 'self';
+    """
+
+    # Strict Transport Security (HTTPS only)
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+
+# Cache static assets
+[[headers]]
+  for = "/build/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

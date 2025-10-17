@@ -1,0 +1,171 @@
+name: Security Scan
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/security-scan.yml'
+
+jobs:
+  dependency-audit:
+    name: Dependency Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        id: npm-audit
+        continue-on-error: true
+        run: |
+          echo "## 🔍 NPM Audit Results" >> $GITHUB_STEP_SUMMARY
+          npm audit --audit-level=moderate > audit-results.txt 2>&1 || true
+          cat audit-results.txt
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          cat audit-results.txt >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+          # Check if vulnerabilities found
+          if npm audit --audit-level=moderate; then
+            echo "status=pass" >> $GITHUB_OUTPUT
+          else
+            echo "status=fail" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for available fixes
+        if: steps.npm-audit.outputs.status == 'fail'
+        run: |
+          echo "## 🔧 Available Fixes" >> $GITHUB_STEP_SUMMARY
+          npm audit fix --dry-run >> $GITHUB_STEP_SUMMARY 2>&1 || true
+
+      - name: Upload audit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-results
+          path: audit-results.txt
+          retention-days: 30
+
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+          allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC
+
+  secret-scan:
+    name: Secret Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for secret scanning
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }} # Optional: for Gitleaks Pro
+
+      - name: Run local secret check
+        run: |
+          echo "## 🔐 Local Secret Check" >> $GITHUB_STEP_SUMMARY
+          bash scripts/check-secrets.sh || echo "⚠️ Secret check script not found"
+
+  outdated-dependencies:
+    name: Check Outdated Dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check for outdated packages
+        run: |
+          echo "## 📦 Outdated Dependencies" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          npm outdated >> $GITHUB_STEP_SUMMARY 2>&1 || true
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+  license-compliance:
+    name: License Compliance Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check licenses
+        run: |
+          echo "## 📜 License Check" >> $GITHUB_STEP_SUMMARY
+          npx license-checker --summary >> $GITHUB_STEP_SUMMARY 2>&1 || echo "license-checker not available"
+
+  summary:
+    name: Security Summary
+    runs-on: ubuntu-latest
+    needs: [dependency-audit, secret-scan, outdated-dependencies]
+    if: always()
+
+    steps:
+      - name: Create summary
+        run: |
+          echo "## 🛡️ Security Scan Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Results:" >> $GITHUB_STEP_SUMMARY
+          echo "- Dependency Audit: ${{ needs.dependency-audit.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Secret Scan: ${{ needs.secret-scan.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Outdated Check: ${{ needs.outdated-dependencies.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Next Steps:**" >> $GITHUB_STEP_SUMMARY
+          echo "1. Review audit results in artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "2. Run \`npm audit fix\` for automatic fixes" >> $GITHUB_STEP_SUMMARY
+          echo "3. Review outdated packages and update as needed" >> $GITHUB_STEP_SUMMARY
+          echo "4. Check for secrets and rotate if found" >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: |
+          needs.dependency-audit.result == 'failure' ||
+          needs.secret-scan.result == 'failure'
+        run: |
+          echo "::error::Security vulnerabilities detected! Review the workflow summary."
